@@ -10,7 +10,7 @@ class Database {
 
     public static function getConnection() {
         if (self::$conn === null) {
-            self::$conn = new \mysqli("127.0.0.1", "root", "t0ps3cr3t", "evaluacion", 3307);
+            self::$conn = new \mysqli("127.0.0.1", "itvoDeveloper", "********", "evaluacion", 3307);
             if (self::$conn->connect_error) {
                 throw new \Exception("Error de conexión: " . self::$conn->connect_error);
             }

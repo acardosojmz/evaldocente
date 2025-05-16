@@ -21,8 +21,8 @@ class SurveyController {
         $p3 = (int) ($_POST['pregunta3'] ?? 0);
         $comentarios = $_POST['comentarios'] ?? '';
         $conn = Database::getConnection();
-        $model = new SurveyModel($conn);
-        [$success, $message] = $model->save($docente, $p1, $p2, $p3, $comentarios);
+        $surveyModel = new SurveyModel($conn);
+        [$success, $message] = $surveyModel->save($docente, $p1, $p2, $p3, $comentarios);
 
         $response = (object)[
             'success' => $success,
@@ -32,7 +32,38 @@ class SurveyController {
 
         TemplateEngine::render("response", ['response' => $response]);
     }
+
     public static function add() {
         TemplateEngine::render("survey_add");
     }
+
+    public static function graph() {
+        $conn = Database::getConnection();
+        $surveyModel = new SurveyModel($conn);
+        $teachers = $surveyModel->queryAllTeachers();
+        TemplateEngine::render("survey_graph", ['teachers' =>$teachers]);
+    }
+    public static function statistics() {
+        //--- Obtener el cuerpo crudo de la solicitud POST
+        $rawData = file_get_contents("php://input");
+
+        //--- Decodificar el JSON
+        $data = json_decode($rawData, true); //--- true para obtener un array asociativo
+
+        //--- Acceder al parámetro 'teacher'
+        $teacher = $data['teacher'] ?? "Ambrosio Cardoso";
+
+        $conn = Database::getConnection();
+        $surveyModel = new SurveyModel($conn);
+        $data = $surveyModel->queryByTeacher($teacher);
+
+        $response = json_encode([
+            'success' => count($data) > 0,
+            'message' => count($data) > 0?'Datos recuperados':'No hay datos',
+            'data' => $data
+        ]);
+        header('Content-Type: application/json');
+        echo $response;
+    }
+
 }

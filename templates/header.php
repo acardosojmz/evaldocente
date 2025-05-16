@@ -6,6 +6,8 @@
     <title>Evaluación docente</title>
     <!-- Bootstrap 5.3.6 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <link href="<?= BASE_URL ?>css/style.css" type="text/css" rel="stylesheet">
 </head>
 <body class="d-flex flex-column min-vh-100">
